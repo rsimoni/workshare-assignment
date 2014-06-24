@@ -1,6 +1,3 @@
-// NOTE for workshare code reviewer:
-//   this is what i would like to obtain
-//   to obtain a green i 
 describe("Workshare", function() {
 
 	it("returns at least one files", function() {
@@ -8,5 +5,5 @@ describe("Workshare", function() {
 		var answer = workshare.files();
 		expect(answer.files.length).toBeGreaterThan(0);
 	});
-
+	
 });

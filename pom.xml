@@ -27,9 +27,7 @@
 		<jslint4java.version>2.0.3</jslint4java.version>
 		<jslint.source.dir>${basedir}/src/main/webapp/js</jslint.source.dir>
 
-		<!--
-		<jquery.version>1.10.2.min</jquery.version>
-		  -->
+		<jquery.version>1.11.1.min</jquery.version>
 	</properties>
 
 	<dependencies>
@@ -299,13 +297,13 @@
 					<jsSrcDir>${project.basedir}/src/main/webapp/js</jsSrcDir>
 
 					<!-- NOTE: jQuery is needed for all other Javascript objects -->
-					<!--
 					<preloadSources>
 						<source>${project.basedir}/src/main/webapp/lib/jquery-${jquery.version}.js</source>
+						<!-- 
 						<source>${project.basedir}/src/main/webapp/lib/underscore-min.js</source>
 						<source>${project.basedir}/src/main/webapp/lib/backbone-min.js</source>
+						  -->
 					</preloadSources>
-					  -->
 				</configuration>
 			</plugin>
 
