@@ -9,6 +9,7 @@ import net.minidev.json.JSONArray;
 
 import org.junit.*;
 
+import workshareassignment.SampleData;
 import workshareassignment.provided.Workshare;
 
 public class WorkshareLearningIT {
@@ -16,8 +17,8 @@ public class WorkshareLearningIT {
 	private Workshare client;
 
 	@Before public void login() throws IOException {
-		client = new Workshare("13922396-557d");
-		client.login("rsimoni.job+test@gmail.com", "ch1natown");
+		client = new Workshare();
+		client.login(SampleData.WORKSHARE_USERNAME, SampleData.WORKSHARE_PASSWORD);
 	}
 
 	@Test public void returns_at_least_one_file() throws IOException {

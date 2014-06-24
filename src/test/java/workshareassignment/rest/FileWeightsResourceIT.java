@@ -20,9 +20,9 @@ public class FileWeightsResourceIT extends JerseyTest {
 	
 	@Test public void returns_output() {
 		String json = target("fileweights")
-				.queryParam("username", SampleData.WORKSHARE_USERNAME)
-				.queryParam("password", SampleData.WORKSHARE_PASSWORD)
 				.request()
+				.header("username", SampleData.WORKSHARE_USERNAME)
+				.header("password", SampleData.WORKSHARE_PASSWORD)
 				.get(String.class);
         assertThat(json, containsString("documents"));
 	}

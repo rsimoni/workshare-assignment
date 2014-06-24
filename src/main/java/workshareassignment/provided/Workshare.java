@@ -30,7 +30,8 @@ import org.apache.http.util.*;
  */
 public class Workshare {
 
-    public static final String DEFAULT_BASE_URL = "https://my.workshare.com";
+	public static final String DEFAULT_APP_UID = System.getProperty("workshare.app.uid", "13922396-557d");
+    public static final String DEFAULT_BASE_URL = System.getProperty("workshare.base.url", "https://my.workshare.com");
 
     private static final Logger log = Logger.getLogger(Workshare.class.getName());
 
@@ -39,7 +40,11 @@ public class Workshare {
     private final HttpContext context;
     private final String appUid;
 
-    public Workshare(String appuid) {
+    public Workshare() {
+		this(DEFAULT_APP_UID);
+	}
+
+	public Workshare(String appuid) {
         this(DEFAULT_BASE_URL, appuid);
     }
 

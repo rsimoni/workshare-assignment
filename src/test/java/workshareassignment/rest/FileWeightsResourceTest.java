@@ -27,6 +27,7 @@ public class FileWeightsResourceTest {
 			oneOf(workshare).login(SampleData.WORKSHARE_USERNAME, SampleData.WORKSHARE_PASSWORD);
 			oneOf(workshare).getFiles();
 				will(returnValue(filesAsJsonArray));
+			oneOf(workshare).logout();
 		}});
 		
 		FileWeightsResource resource = new FileWeightsResource(workshare);

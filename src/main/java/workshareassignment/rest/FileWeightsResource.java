@@ -18,16 +18,15 @@ public class FileWeightsResource {
 	private final Workshare workshare;
 
 	public FileWeightsResource() {
-		this(new Workshare("13922396-557d"));
+		this(new Workshare());
 	}
 
 	public FileWeightsResource(Workshare workshare) {
 		this.workshare = workshare;
 	}
 
-	//FIXME rimuovere i default
 	@GET
-	public FileWeightsResource.Report report(@QueryParam("username") @DefaultValue("rsimoni.job+test@gmail.com") String username, @QueryParam("password") @DefaultValue("ch1natown") String password) {
+	public FileWeightsResource.Report report(@HeaderParam("username") String username, @HeaderParam("password") String password) {
 		try {
 			workshare.login(username, password);
 			FileWeightsResource.Report report = FileWeightsResource.Report.valueOf(workshare.getFiles());
@@ -37,6 +36,9 @@ public class FileWeightsResource {
 			LOG.log(Level.SEVERE, "Unable to connect to workshare", e);
 			// FIXME capire come segnalare la cosa
 			throw new RuntimeException("unexpected error", e);
+		} finally {
+			try { workshare.logout(); } 
+			catch (IOException ignore) { }
 		}
 	}
 	
