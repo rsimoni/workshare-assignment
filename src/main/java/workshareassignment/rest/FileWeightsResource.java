@@ -1,12 +1,14 @@
 package workshareassignment.rest;
 
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.logging.*;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
 import workshareassignment.provided.Workshare;
 
 @Path("fileweights")
@@ -45,18 +47,35 @@ public class FileWeightsResource {
 	public static class Report {
 
 		private final int documentsNumber;
+		private final int videosNumber;
 		
-		public Report(int documentsNumber) {
+		public Report(int documentsNumber, int videosNumber) {
 			super();
 			this.documentsNumber = documentsNumber;
+			this.videosNumber = videosNumber;
 		}
 
 		public int getDocumentsNumber() {
 			return documentsNumber;
 		}
 
+		public int getVideosNumber() {
+			return videosNumber;
+		}
+
 		public static Report valueOf(JSONArray json) {
-			return new Report(json.size());
+			int documents = 0;
+			int videos = 0;
+			Iterator<Object> iterator = json.iterator();
+			while (iterator.hasNext()) {
+				JSONObject file = (JSONObject) iterator.next();
+				String fileExtension = (String) file.get("extension");
+				if ("pdf".equalsIgnoreCase(fileExtension))
+					documents++;
+				if ("avi".equalsIgnoreCase(fileExtension))
+					videos++;
+			}
+			return new Report(documents, videos);
 		}
 
 		@Override
