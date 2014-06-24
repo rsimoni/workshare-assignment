@@ -1,4 +1,4 @@
-package learning;
+package workshareassignment.provided;
 
 import java.io.*;
 import java.util.*;
@@ -19,26 +19,36 @@ import org.apache.http.protocol.*;
 import org.apache.http.util.*;
 
 /**
- * Represents <a href="http://workshare.com" >Workshare.com</a> api client.
+ * Represents <a href="http://workshare.com" >Workshare.com</a> api client provided by Workshare.
+ * 
+ * <p>
+ * This code can be found <a href="https://github.com/workshare/openapi-sample-java">here</a>.
+ * I have simply changed logging. 
+ * </p>
  * 
  * @author <a href="https://github.com/workshare/openapi-sample-java">provided by Workshare example</a>
  */
-public class ApiClient {
+public class Workshare {
 
-    public static final String DEFAULT_BASE_URL = "https://my.workshare.com";
+	public static final String DEFAULT_APP_UID = System.getProperty("workshare.app.uid", "13922396-557d");
+    public static final String DEFAULT_BASE_URL = System.getProperty("workshare.base.url", "https://my.workshare.com");
 
-    private static final Logger log = Logger.getLogger(ApiClient.class.getName());
+    private static final Logger log = Logger.getLogger(Workshare.class.getName());
 
     private final String baseUrl;
     private final HttpClient httpclient;
     private final HttpContext context;
     private final String appUid;
 
-    public ApiClient(String appuid) {
+    public Workshare() {
+		this(DEFAULT_APP_UID);
+	}
+
+	public Workshare(String appuid) {
         this(DEFAULT_BASE_URL, appuid);
     }
 
-    public ApiClient(String baseurl, String appuid) {
+    public Workshare(String baseurl, String appuid) {
         this.baseUrl = baseurl;
         this.appUid = appuid;
 

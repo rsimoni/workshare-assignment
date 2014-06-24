@@ -5,7 +5,7 @@
 	<groupId>com.github.rsimoni</groupId>
 	<artifactId>workshare-assignment</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 
 	<name>Workshare Assignment</name>
 	<description>The Workshare.com assignment</description>
@@ -17,8 +17,8 @@
 
 		<java.version>1.7</java.version>
 
-		<appengine.app.version>1</appengine.app.version>
-		<appengine.target.version>1.9.6</appengine.target.version>
+		<tomcat.version>7.0.34</tomcat.version>
+
 		<servlet.api>2.5</servlet.api>
 		<jersey.version>2.9</jersey.version>
 
@@ -28,46 +28,44 @@
 		<jslint4java.version>2.0.3</jslint4java.version>
 		<jslint.source.dir>${basedir}/src/main/webapp/js</jslint.source.dir>
 
-		<!--
-		<jquery.version>1.10.2.min</jquery.version>
-		  -->
+		<httpclient.version>4.2.5</httpclient.version>
 	</properties>
 
 	<dependencies>
 
+		<!-- == Embedded Tomcat ============================= -->
 		<dependency>
-			<groupId>com.google.appengine</groupId>
-			<artifactId>appengine-api-1.0-sdk</artifactId>
-			<version>${appengine.target.version}</version>
+			<groupId>org.apache.tomcat.embed</groupId>
+			<artifactId>tomcat-embed-core</artifactId>
+			<version>${tomcat.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>${servlet.api}</version>
-			<scope>provided</scope>
+			<groupId>org.apache.tomcat.embed</groupId>
+			<artifactId>tomcat-embed-logging-juli</artifactId>
+			<version>${tomcat.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>jstl</groupId>
-			<artifactId>jstl</artifactId>
-			<version>1.2</version>
-		</dependency>
-
-		<!-- FIXME to remove
-		<dependency>
-			<groupId>joda-time</groupId>
-			<artifactId>joda-time</artifactId>
-			<version>${jodatime.version}</version>
-			<scope>compile</scope>
+			<groupId>org.apache.tomcat.embed</groupId>
+			<artifactId>tomcat-embed-jasper</artifactId>
+			<version>${tomcat.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<version>15.0</version>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-jasper</artifactId>
+			<version>${tomcat.version}</version>
 		</dependency>
-		  -->
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-jasper-el</artifactId>
+			<version>${tomcat.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-jsp-api</artifactId>
+			<version>${tomcat.version}</version>
+		</dependency>
 
 		<!-- == REST ======================================== -->
-		<!--
 		<dependency>
 			<groupId>org.glassfish.jersey.containers</groupId>
 			<artifactId>jersey-container-servlet</artifactId>
@@ -78,30 +76,22 @@
 			<artifactId>jersey-media-json-jackson</artifactId>
 			<version>${jersey.version}</version>
 		</dependency>
-		  -->
-		<!-- 
-		<dependency>
-			<groupId>org.glassfish.jersey.core</groupId>
-			<artifactId>jersey-client</artifactId>
-			<version>2.9</version>
-		</dependency>
-		 -->
+
 		<dependency>
 			<groupId>net.minidev</groupId>
 			<artifactId>json-smart</artifactId>
 			<version>1.1.1</version>
 		</dependency>
-	
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-			<version>4.2.5</version>
-		</dependency>
-	
+
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpmime</artifactId>
-			<version>4.2.5</version>
+			<version>${httpclient.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>${httpclient.version}</version>
 		</dependency>
 
 		<!-- == Testing ===================================== -->
@@ -150,15 +140,9 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.google.appengine</groupId>
-			<artifactId>appengine-testing</artifactId>
-			<version>${appengine.target.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.google.appengine</groupId>
-			<artifactId>appengine-api-stubs</artifactId>
-			<version>${appengine.target.version}</version>
+			<groupId>org.glassfish.jersey.test-framework.providers</groupId>
+			<artifactId>jersey-test-framework-provider-grizzly2</artifactId>
+			<version>${jersey.version}</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -231,40 +215,6 @@
 			</plugin>
 
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-war-plugin</artifactId>
-				<version>2.3</version>
-				<configuration>
-					<archiveClasses>true</archiveClasses>
-					<failOnMissingWebXml>false</failOnMissingWebXml>
-					<webResources>
-						<!-- in order to interpolate version from pom into appengine-web.xml -->
-						<resource>
-							<directory>${basedir}/src/main/webapp/WEB-INF</directory>
-							<filtering>true</filtering>
-							<targetPath>WEB-INF</targetPath>
-						</resource>
-					</webResources>
-				</configuration>
-			</plugin>
-
-			<plugin>
-				<groupId>com.google.appengine</groupId>
-				<artifactId>appengine-maven-plugin</artifactId>
-				<version>${appengine.target.version}</version>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.tomcat.maven</groupId>
-				<artifactId>tomcat7-maven-plugin</artifactId>
-				<version>2.2</version>
-				<configuration>
-					<port>8080</port>
-					<path>/</path>
-				</configuration>
-			</plugin>
-
-			<plugin>
 				<groupId>com.googlecode.jslint4java</groupId>
 				<artifactId>jslint4java-maven-plugin</artifactId>
 				<version>2.0.2</version>
@@ -285,7 +235,7 @@
 								<vars>true</vars>
 								<eqeq>true</eqeq>
 								<evil>true</evil>
-								<continue>true</continue> 
+								<continue>true</continue>
 								<plusplus>true</plusplus>
 							</options>
 
@@ -314,16 +264,34 @@
 					<jsSrcDir>${project.basedir}/src/main/webapp/js</jsSrcDir>
 
 					<!-- NOTE: jQuery is needed for all other Javascript objects -->
-					<!--
-					<preloadSources>
-						<source>${project.basedir}/src/main/webapp/lib/jquery-${jquery.version}.js</source>
-						<source>${project.basedir}/src/main/webapp/lib/underscore-min.js</source>
-						<source>${project.basedir}/src/main/webapp/lib/backbone-min.js</source>
-					</preloadSources>
-					  -->
+					<!-- <preloadSources> <source>${project.basedir}/src/main/webapp/lib/jquery-${jquery.version}.js</source> 
+						<source>${project.basedir}/src/main/webapp/lib/underscore-min.js</source> 
+						<source>${project.basedir}/src/main/webapp/lib/backbone-min.js</source> </preloadSources> -->
 				</configuration>
 			</plugin>
 
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>appassembler-maven-plugin</artifactId>
+				<version>1.1.1</version>
+				<configuration>
+					<assembleDirectory>target</assembleDirectory>
+					<programs>
+						<program>
+							<mainClass>workshareassignment.Main</mainClass>
+							<name>webapp</name>
+						</program>
+					</programs>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>assemble</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 
 		<pluginManagement>
@@ -339,6 +307,38 @@
 					</configuration>
 				</plugin>
 
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											com.googlecode.jslint4java
+										</groupId>
+										<artifactId>
+											jslint4java-maven-plugin
+										</artifactId>
+										<versionRange>
+											[2.0.2,)
+										</versionRange>
+										<goals>
+											<goal>lint</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 
