@@ -9,17 +9,20 @@ import net.minidev.json.JSONArray;
 
 import org.junit.*;
 
-public class WorkshareLearningTest {
+import workshareassignment.provided.Workshare;
 
-	private ApiClient client;
+public class WorkshareLearningIT {
+
+	private Workshare client;
 
 	@Before public void login() throws IOException {
-		client = new ApiClient("13922396-557d");
+		client = new Workshare("13922396-557d");
 		client.login("rsimoni.job+test@gmail.com", "ch1natown");
 	}
 
 	@Test public void returns_at_least_one_file() throws IOException {
 		JSONArray files = client.getFiles();
+		System.out.println(files);
 		assertThat(files.size(), is(greaterThan(0)));
 	}
 

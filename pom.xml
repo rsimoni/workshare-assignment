@@ -67,7 +67,6 @@
 		  -->
 
 		<!-- == REST ======================================== -->
-		<!--
 		<dependency>
 			<groupId>org.glassfish.jersey.containers</groupId>
 			<artifactId>jersey-container-servlet</artifactId>
@@ -78,7 +77,6 @@
 			<artifactId>jersey-media-json-jackson</artifactId>
 			<version>${jersey.version}</version>
 		</dependency>
-		  -->
 		<!-- 
 		<dependency>
 			<groupId>org.glassfish.jersey.core</groupId>
@@ -86,6 +84,7 @@
 			<version>2.9</version>
 		</dependency>
 		 -->
+		 
 		<dependency>
 			<groupId>net.minidev</groupId>
 			<artifactId>json-smart</artifactId>
@@ -159,6 +158,12 @@
 			<groupId>com.google.appengine</groupId>
 			<artifactId>appengine-api-stubs</artifactId>
 			<version>${appengine.target.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.test-framework.providers</groupId>
+			<artifactId>jersey-test-framework-provider-grizzly2</artifactId>
+			<version>${jersey.version}</version>
 			<scope>test</scope>
 		</dependency>
 
