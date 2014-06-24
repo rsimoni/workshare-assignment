@@ -1,6 +1,7 @@
 package workshareassignment.rest;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Iterator;
 import java.util.logging.*;
 
@@ -48,11 +49,13 @@ public class FileWeightsResource {
 
 		private final int documentsNumber;
 		private final int videosNumber;
+		private final BigDecimal videosGravity;
 		
-		public Report(int documentsNumber, int videosNumber) {
+		public Report(int documentsNumber, int videosNumber, BigDecimal videosGravity) {
 			super();
 			this.documentsNumber = documentsNumber;
 			this.videosNumber = videosNumber;
+			this.videosGravity = videosGravity;
 		}
 
 		public int getDocumentsNumber() {
@@ -63,19 +66,30 @@ public class FileWeightsResource {
 			return videosNumber;
 		}
 
+		public BigDecimal getVideosGravity() {
+			return videosGravity;
+		}
+
 		public static Report valueOf(JSONArray json) {
+			BigDecimal videosGravity = new BigDecimal("1.4");
+
 			int documents = 0;
 			int videos = 0;
+			BigDecimal videosWeights = BigDecimal.ZERO;
 			Iterator<Object> iterator = json.iterator();
 			while (iterator.hasNext()) {
 				JSONObject file = (JSONObject) iterator.next();
 				String fileExtension = (String) file.get("extension");
+				BigDecimal size = new BigDecimal((Integer) file.get("size"));
 				if ("pdf".equalsIgnoreCase(fileExtension))
 					documents++;
-				if ("avi".equalsIgnoreCase(fileExtension))
+				if ("avi".equalsIgnoreCase(fileExtension)) {
 					videos++;
+					BigDecimal weight = videosGravity.multiply(size);
+					videosWeights = videosWeights.add(weight); 
+				}
 			}
-			return new Report(documents, videos);
+			return new Report(documents, videos, videosWeights);
 		}
 
 		@Override

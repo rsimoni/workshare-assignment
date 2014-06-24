@@ -3,6 +3,7 @@ package workshareassignment.rest;
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONValue;
@@ -16,21 +17,29 @@ public class FileWeightsResourceReportTest {
 
 	@Test public void valueOf_returns_3_documents() throws IOException {
 		final JSONArray json = aJSONArray(
-				aFileAsJSON("pdf", "Workshare for iPhone and iPad", "1858008"), 
-				aFileAsJSON("pdf", "hello world!", "1858008"), 
-				aFileAsJSON("pdf", "bye bye", "1858008")
+				aFileAsJSON("Workshare for iPhone and iPad", "pdf", "1858008"), 
+				aFileAsJSON("hello world!", "pdf", "1858008"), 
+				aFileAsJSON("bye bye", "pdf", "1858008")
 		);
 		Report report = FileWeightsResource.Report.valueOf(json);
 		assertEquals(3, report.getDocumentsNumber());
 	}
 
-	@Test public void valueOf_returns_1_video() throws IOException {
-		final JSONArray json = aJSONArray(aFileAsJSON("avi", "bye bye", "1858008"));
+	@Test public void valueOf_returns_2_videos_with_expected_weights() throws IOException {
+		final JSONArray json = aJSONArray(
+				aFileAsJSON("wombats", "avi", megabyte(10)),
+				aFileAsJSON("crazy-dog", "avi", megabyte(22))
+		);
 		Report report = FileWeightsResource.Report.valueOf(json);
-		assertEquals(1, report.getVideosNumber());
+		assertEquals(2, report.getVideosNumber());
+		assertEquals(new BigDecimal("46976204.8"), report.getVideosGravity());
 	}
 
-	private String aFileAsJSON(String extension, String name, String sizeAsText) {
+	private String aFileAsJSON(String name, String extension, long size) {
+		return aFileAsJSON(name, extension, Long.toString(size));
+	}
+
+	private String aFileAsJSON(String name, String extension, String sizeAsText) {
 		return new StringBuilder()
 			.append("{\"extension\":\"")
 			.append(extension)
@@ -46,6 +55,10 @@ public class FileWeightsResourceReportTest {
 		return (JSONArray) JSONValue.parse("["
 				+ StringUtils.join(items, ", ")
 				+ "]");
+	}
+
+	private long megabyte(int megabyte) {
+		return megabyte * 1024 * 1024;
 	}
 	
 }
