@@ -42,17 +42,16 @@ public class Report {
 			JSONObject file = (JSONObject) iterator.next();
 			
 			String fileExtension = (String) file.get("extension");
-			BigDecimal size = new BigDecimal((Integer) file.get("size"));
+			BigDecimal bytes = new BigDecimal((Integer) file.get("size"));
 			Category category = Category.byExtension(fileExtension);
 
 			CategorySummary categorySummary = categories.get(category);
 			if (categorySummary == null) {
-				categorySummary = new CategorySummary();
+				categorySummary = new CategorySummary(category);
 				categories.put(category, categorySummary);
 			}
 
-			BigDecimal weight = category.weight(size);
-			categorySummary.add(weight);
+			categorySummary.add(bytes);
 		}
 		
 		return new Report(categories);
@@ -61,6 +60,10 @@ public class Report {
 	@Override
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	}
+
+	public boolean contains(CategorySummary categorySummary) {
+		return categories.containsValue(categorySummary);
 	}
 
 }
