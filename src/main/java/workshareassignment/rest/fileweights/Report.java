@@ -1,6 +1,6 @@
 package workshareassignment.rest.fileweights;
 
-import java.math.BigDecimal;
+import java.math.*;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -8,8 +8,9 @@ import java.util.Map;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+import org.apache.commons.lang3.builder.*;
+
+import workshareassignment.util.BigDecimals;
 
 public class Report {
 
@@ -26,12 +27,16 @@ public class Report {
 		return items;
 	}
 
-	public boolean containsItemFor(Category category) {
-		return items.containsKey(category);
-	}
-
 	public Item itemOf(Category category) {
 		return items.get(category);
+	}
+
+	public boolean contains(Item item) {
+		return items.containsValue(item);
+	}
+
+	public boolean contains(Category category) {
+		return items.containsKey(category);
 	}
 
 	public static Report valueOf(JSONArray json) {
@@ -62,8 +67,62 @@ public class Report {
 		return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
-	public boolean contains(Item categorySummary) {
-		return items.containsValue(categorySummary);
+	public static class Item {
+		
+		private Category category;
+		private int count;
+		private BigDecimal weight;
+		private BigDecimal idealWeight;
+		
+		public Item(Category category) {
+			this.category = category;
+			this.count = 0;
+			this.weight = BigDecimal.ZERO;
+			this.idealWeight = BigDecimal.ZERO;
+		}
+
+		Item(Category category, int count, BigDecimal weight, BigDecimal idealWeight) {
+			super();
+			this.category = category;
+			this.count = count;
+			this.weight = weight;
+			this.idealWeight = idealWeight;
+		}
+
+		public void add(BigDecimal sizeInBytes) {
+			BigDecimal sizeInMB = BigDecimals.round(sizeInBytes.divide(BigDecimals.ONE_MEGABYTE, 10, RoundingMode.HALF_UP));
+			this.idealWeight = this.idealWeight.add(sizeInMB);
+			this.weight = this.weight.add(category.weight(sizeInBytes));
+			count++;
+		}
+
+		public int getCount() {
+			return count;
+		}
+
+		public BigDecimal getWeight() {
+			return weight;
+		}
+
+		public BigDecimal getIdealWeight() {
+			return idealWeight;
+		}
+
+		@Override
+		public int hashCode() {
+			return HashCodeBuilder.reflectionHashCode(this);
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			return EqualsBuilder.reflectionEquals(this, obj);
+		}
+
+		@Override
+		public String toString() {
+			return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		}
+
 	}
 
 }

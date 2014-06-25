@@ -27,12 +27,12 @@ public class ReportTest {
 		);
 		Report report = Report.valueOf(json);
 		System.out.println(report);
-		assertTrue(report.contains(new Item(Category.videos,    2, new BigDecimal( "44.80"), new BigDecimal( "32.00"))));
-		assertTrue(report.contains(new Item(Category.songs,     1, new BigDecimal(  "4.20"), new BigDecimal(  "3.50"))));
-		assertTrue(report.contains(new Item(Category.documents, 2, new BigDecimal(  "3.45"), new BigDecimal(  "3.10"))));
-		assertTrue(report.contains(new Item(Category.binaries,  1, new BigDecimal("220.00"), new BigDecimal("220.00"))));
-		assertTrue(report.contains(new Item(Category.text,      1, new BigDecimal("100.10"), new BigDecimal(  "0.10"))));
-		assertNull(report.itemOf(Category.others));
+		assertTrue(report.contains(new Report.Item(Category.videos,    2, new BigDecimal( "44.80"), new BigDecimal( "32.00"))));
+		assertTrue(report.contains(new Report.Item(Category.songs,     1, new BigDecimal(  "4.20"), new BigDecimal(  "3.50"))));
+		assertTrue(report.contains(new Report.Item(Category.documents, 2, new BigDecimal(  "3.45"), new BigDecimal(  "3.10"))));
+		assertTrue(report.contains(new Report.Item(Category.binaries,  1, new BigDecimal("220.00"), new BigDecimal("220.00"))));
+		assertTrue(report.contains(new Report.Item(Category.text,      1, new BigDecimal("100.10"), new BigDecimal(  "0.10"))));
+		assertFalse(report.contains(Category.others));
 	}
 
 	private String aFileAsJSON(String name, String extension, BigDecimal size) {
