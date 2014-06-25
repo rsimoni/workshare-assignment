@@ -1,9 +1,7 @@
 package workshareassignment.rest.fileweights;
 
 import java.math.*;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
@@ -14,29 +12,26 @@ import workshareassignment.util.BigDecimals;
 
 public class Report {
 
-	private final Map<Category, Item> items;
+	private final List<Item> items;
 	
-	public Report(Map<Category, Item> items) {
-		this.items = items;
-	}
-
-	/**
-	 * @deprecated Needed by Jersey for JSON serialization! Do not use!
-	 */
-	public Map<Category, Item> getItems() {
-		return items;
+	public Report(Collection<Item> items) {
+		this.items = new LinkedList<>(items);
 	}
 
 	public Item itemOf(Category category) {
-		return items.get(category);
+		for (Item item : items) {
+			if (category.equals(item.category))
+				return item;
+		}
+		return null;
 	}
 
 	public boolean contains(Item item) {
-		return items.containsValue(item);
+		return items.contains(item);
 	}
 
 	public boolean contains(Category category) {
-		return items.containsKey(category);
+		return itemOf(category) != null;
 	}
 
 	public static Report valueOf(JSONArray json) {
@@ -59,7 +54,7 @@ public class Report {
 			item.add(bytes);
 		}
 		
-		return new Report(items);
+		return new Report(items.values());
 	}
 
 	@Override
@@ -67,9 +62,16 @@ public class Report {
 		return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
+	/**
+	 * @deprecated Needed by Jersey for JSON serialization! Do not use!
+	 */
+	public List<Item> getItems() {
+		return items;
+	}
+
 	public static class Item {
 		
-		private Category category;
+		private final Category category;
 		private int count;
 		private BigDecimal weight;
 		private BigDecimal idealWeight;
@@ -94,6 +96,10 @@ public class Report {
 			this.idealWeight = this.idealWeight.add(sizeInMB);
 			this.weight = this.weight.add(category.weight(sizeInBytes));
 			count++;
+		}
+
+		public Category getCategory() {
+			return category;
 		}
 
 		public int getCount() {
