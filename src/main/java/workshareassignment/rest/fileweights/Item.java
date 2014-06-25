@@ -9,38 +9,38 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 import workshareassignment.util.BigDecimals;
 
-public class CategorySummary {
+public class Item {
 	
 	private Category category;
 	private int count;
 	private BigDecimal weight;
 	private BigDecimal idealWeight;
 	
-	public CategorySummary() {
+	public Item() {
 		this(0, BigDecimal.ZERO);
 	}
 
-	public CategorySummary(int count, BigDecimal weight) {
+	public Item(int count, BigDecimal weight) {
 		super();
 		this.count = count;
 		this.weight = weight;
 	}
 
-	public CategorySummary(int count, BigDecimal weight, BigDecimal idealWeight) {
+	public Item(int count, BigDecimal weight, BigDecimal idealWeight) {
 		super();
 		this.count = count;
 		this.weight = weight;
 		this.idealWeight = idealWeight;
 	}
 
-	public CategorySummary(Category category) {
+	public Item(Category category) {
 		this.category = category;
 		this.count = 0;
 		this.weight = BigDecimal.ZERO;
 		this.idealWeight = BigDecimal.ZERO;
 	}
 
-	public CategorySummary(Category category, int count, BigDecimal weight, BigDecimal idealWeight) {
+	public Item(Category category, int count, BigDecimal weight, BigDecimal idealWeight) {
 		super();
 		this.category = category;
 		this.count = count;

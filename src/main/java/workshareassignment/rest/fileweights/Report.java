@@ -13,29 +13,29 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class Report {
 
-	private final Map<Category, CategorySummary> categories;
+	private final Map<Category, Item> items;
 	
-	public Report(Map<Category, CategorySummary> categories) {
-		this.categories = categories;
+	public Report(Map<Category, Item> items) {
+		this.items = items;
 	}
 
 	/**
 	 * @deprecated Needed by Jersey for JSON serialization! Do not use!
 	 */
-	public Map<Category, CategorySummary> getCategories() {
-		return categories;
+	public Map<Category, Item> getItems() {
+		return items;
 	}
 
-	public boolean containsCategory(Category category) {
-		return categories.containsKey(category);
+	public boolean containsItemFor(Category category) {
+		return items.containsKey(category);
 	}
 
-	public CategorySummary summaryOf(Category category) {
-		return categories.get(category);
+	public Item itemOf(Category category) {
+		return items.get(category);
 	}
 
 	public static Report valueOf(JSONArray json) {
-		Map<Category, CategorySummary> categories = new LinkedHashMap<>();
+		Map<Category, Item> items = new LinkedHashMap<>();
 
 		Iterator<Object> iterator = json.iterator();
 		while (iterator.hasNext()) {
@@ -45,16 +45,16 @@ public class Report {
 			BigDecimal bytes = new BigDecimal((Integer) file.get("size"));
 			Category category = Category.byExtension(fileExtension);
 
-			CategorySummary categorySummary = categories.get(category);
-			if (categorySummary == null) {
-				categorySummary = new CategorySummary(category);
-				categories.put(category, categorySummary);
+			Item item = items.get(category);
+			if (item == null) {
+				item = new Item(category);
+				items.put(category, item);
 			}
 
-			categorySummary.add(bytes);
+			item.add(bytes);
 		}
 		
-		return new Report(categories);
+		return new Report(items);
 	}
 
 	@Override
@@ -62,8 +62,8 @@ public class Report {
 		return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
-	public boolean contains(CategorySummary categorySummary) {
-		return categories.containsValue(categorySummary);
+	public boolean contains(Item categorySummary) {
+		return items.containsValue(categorySummary);
 	}
 
 }
