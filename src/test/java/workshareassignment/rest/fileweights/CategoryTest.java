@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 
 import org.junit.Test;
 
-import utils.BigDecimals;
+import workshareassignment.util.BigDecimals;
 
 public class CategoryTest {
 
