@@ -11,10 +11,10 @@ public class App extends ResourceConfig {
 	public App() {
 		super();
 		
-		property("jersey.config.server.tracing.type", "ALL");
+		// NOTE: enable debug of calls
+		//property("jersey.config.server.tracing.type", "ALL");
 		register(new JacksonFeature());
 		register(FileWeightsResource.class);
-		//packages(getClass().getPackage().getName());
 	}
 	
 }

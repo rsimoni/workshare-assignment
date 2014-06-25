@@ -24,6 +24,7 @@ public class FileWeightsResourceIT extends JerseyTest {
 				.header("username", SampleData.WORKSHARE_USERNAME)
 				.header("password", SampleData.WORKSHARE_PASSWORD)
 				.get(String.class);
+        System.out.println("json: " + json);
         assertThat(json, containsString("documents"));
 	}
 

@@ -33,6 +33,12 @@
 
 	<dependencies>
 
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.3.1</version>
+		</dependency>
+
 		<!-- == Embedded Tomcat ============================= -->
 		<dependency>
 			<groupId>org.apache.tomcat.embed</groupId>
@@ -77,12 +83,12 @@
 			<version>${jersey.version}</version>
 		</dependency>
 
+		<!-- == Workshare (client) ========================== -->
 		<dependency>
 			<groupId>net.minidev</groupId>
 			<artifactId>json-smart</artifactId>
 			<version>1.1.1</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpmime</artifactId>
