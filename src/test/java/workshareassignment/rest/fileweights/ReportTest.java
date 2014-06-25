@@ -36,9 +36,9 @@ public class ReportTest {
 		Report report = Report.valueOf(json);
 		System.out.println(report);
 		assertEquals(2, report.countOf(Category.videos));
-		assertEquals(new BigDecimal("46976204.8"), report.weightOf(Category.videos));
+		assertEquals(new BigDecimal("46976204.80"), report.weightOf(Category.videos));
 		assertEquals(1, report.countOf(Category.songs));
-		assertEquals(new BigDecimal("4404019.2"), report.weightOf(Category.songs));
+		assertEquals(new BigDecimal("4404019.20"), report.weightOf(Category.songs));
 	}
 
 	private String aFileAsJSON(String name, String extension, long size) {

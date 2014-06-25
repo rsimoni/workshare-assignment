@@ -32,35 +32,24 @@ public class Report {
 	}
 
 	public static Report valueOf(JSONArray json) {
-		BigDecimal documentsGravity = new BigDecimal("1.1");
-		BigDecimal videosGravity = new BigDecimal("1.4");
-		BigDecimal songsGravity = new BigDecimal("1.2");
-
 		Map<Category, CategorySummary> categories = new LinkedHashMap<>();
 
 		Iterator<Object> iterator = json.iterator();
 		while (iterator.hasNext()) {
 			JSONObject file = (JSONObject) iterator.next();
+			
 			String fileExtension = (String) file.get("extension");
 			BigDecimal size = new BigDecimal((Integer) file.get("size"));
 			Category category = Category.byExtension(fileExtension);
+
 			CategorySummary categorySummary = categories.get(category);
 			if (categorySummary == null) {
 				categorySummary = new CategorySummary();
 				categories.put(category, categorySummary);
 			}
-			if ("pdf".equalsIgnoreCase(fileExtension)) {
-				BigDecimal weight = documentsGravity.multiply(size);
-				categorySummary.add(weight);
-			}
-			if ("avi".equalsIgnoreCase(fileExtension)) {
-				BigDecimal weight = videosGravity.multiply(size);
-				categorySummary.add(weight);
-			}
-			if ("mp3".equalsIgnoreCase(fileExtension)) {
-				BigDecimal weight = songsGravity.multiply(size);
-				categorySummary.add(weight);
-			}
+
+			BigDecimal weight = category.weight(size);
+			categorySummary.add(weight);
 		}
 		
 		return new Report(categories);
