@@ -1,6 +1,6 @@
 package workshareassignment.rest.fileweights;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -11,38 +11,35 @@ import net.minidev.json.JSONValue;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
-import workshareassignment.rest.fileweights.Category;
-import workshareassignment.rest.fileweights.Report;
+import utils.BigDecimals;
 
 
 public class ReportTest {
 
-	@Test public void valueOf_returns_3_documents() throws IOException {
+	@Test public void valueOf_returns_counters_and_weights_as_provided_in_assignment() throws IOException {
 		final JSONArray json = aJSONArray(
-				aFileAsJSON("Workshare for iPhone and iPad", "pdf", "1858008"), 
-				aFileAsJSON("hello world!", "pdf", "1858008"), 
-				aFileAsJSON("bye bye", "pdf", "1858008")
-		);
-		Report report = Report.valueOf(json);
-		assertEquals(3, report.countOf(Category.documents));
-	}
-
-	@Test public void valueOf_returns_2_videos_and_1_song_with_expected_weights() throws IOException {
-		final JSONArray json = aJSONArray(
-				aFileAsJSON("wombats", "avi", megabyte(10)),
-				aFileAsJSON("crazy-dog", "avi", megabyte(22)),
-				aFileAsJSON("backinblack", "mp3", megabyte(3.5))
+				aFileAsJSON("wombats",     "avi",   BigDecimals.megabyte(10)),
+				aFileAsJSON("crazy-dog",   "avi",   BigDecimals.megabyte(22)),
+				aFileAsJSON("backinblack", "mp3",    BigDecimals.megabyte(3.5)),
+				aFileAsJSON("study1",      "odt",    BigDecimals.megabyte(1.1)),
+				aFileAsJSON("study2",      "docx",   BigDecimals.megabyte(2.0)),
+				aFileAsJSON("firefox",     "bin",  BigDecimals.megabyte(220.0)),
+				aFileAsJSON("readme",      "txt",    BigDecimals.megabyte(0.1))
 		);
 		Report report = Report.valueOf(json);
 		System.out.println(report);
-		assertEquals(2, report.countOf(Category.videos));
-		assertEquals(new BigDecimal("46976204.80"), report.weightOf(Category.videos));
-		assertEquals(1, report.countOf(Category.songs));
-		assertEquals(new BigDecimal("4404019.20"), report.weightOf(Category.songs));
+		assertEquals(new CategorySummary(2,   new BigDecimal("44.80")), report.summaryOf(Category.videos));
+		assertEquals(new CategorySummary(1,    new BigDecimal("4.20")), report.summaryOf(Category.songs));
+		assertEquals(new CategorySummary(2,    new BigDecimal("3.45")), report.summaryOf(Category.documents));
+		assertEquals(new CategorySummary(1,  new BigDecimal("220.00")), report.summaryOf(Category.binaries));
+		assertEquals(new CategorySummary(1,  new BigDecimal("100.10")), report.summaryOf(Category.text));
+		assertNull(report.summaryOf(Category.others));
+		
+		// FIXME return the others values
 	}
 
-	private String aFileAsJSON(String name, String extension, long size) {
-		return aFileAsJSON(name, extension, Long.toString(size));
+	private String aFileAsJSON(String name, String extension, BigDecimal size) {
+		return aFileAsJSON(name, extension, Long.toString(size.longValue()));
 	}
 
 	private String aFileAsJSON(String name, String extension, String sizeAsText) {
@@ -63,8 +60,4 @@ public class ReportTest {
 				+ "]");
 	}
 
-	private long megabyte(double megabyte) {
-		return (long) (megabyte * 1024 * 1024);
-	}
-	
 }

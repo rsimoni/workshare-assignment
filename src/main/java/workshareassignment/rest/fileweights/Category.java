@@ -6,7 +6,7 @@ import java.math.RoundingMode;
 import org.apache.commons.lang3.ArrayUtils;
 
 public enum Category {
-	
+
 	documents(new BigDecimal("1.1"), "odt", "docx", "pdf"), 
 	videos(new BigDecimal("1.4"), "avi"), 
 	songs(new BigDecimal("1.2"), "mp3"),
@@ -15,6 +15,9 @@ public enum Category {
 	
 	others();
 
+	private static final BigDecimal DEFAULT_ROUND_TO = new BigDecimal(System.getProperty("workshareassignment.category.roundto", "0.05"));
+	private static final BigDecimal ONE_MEGABYTE = BigDecimal.valueOf(1024 * 1024);
+	
 	private final BigDecimal gravity;
 	private final String[] extensions;
 
@@ -37,9 +40,10 @@ public enum Category {
 
 	public BigDecimal weight(BigDecimal size) {
 		BigDecimal value = size.multiply(gravity);
+		value = value.divide(ONE_MEGABYTE, 10, RoundingMode.HALF_UP);
 		if (this.equals(text))
 			value = value.add(BigDecimal.valueOf(100L));
-		return round(value, new BigDecimal("0.05"), RoundingMode.UP);
+		return round(value, DEFAULT_ROUND_TO, RoundingMode.UP);
 	}
 	
 	private static BigDecimal round(BigDecimal value, BigDecimal roundTo, RoundingMode roundingMode) {

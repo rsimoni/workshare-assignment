@@ -19,16 +19,19 @@ public class Report {
 		this.categories = categories;
 	}
 
+	/**
+	 * @deprecated Needed by Jersey for JSON serialization! Do not use!
+	 */
 	public Map<Category, CategorySummary> getCategories() {
 		return categories;
 	}
 
-	public int countOf(Category category) {
-		return categories.get(category).count;
+	public boolean containsCategory(Category category) {
+		return categories.containsKey(category);
 	}
 
-	public BigDecimal weightOf(Category category) {
-		return categories.get(category).weight;
+	public CategorySummary summaryOf(Category category) {
+		return categories.get(category);
 	}
 
 	public static Report valueOf(JSONArray json) {
