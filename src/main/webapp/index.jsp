@@ -5,7 +5,7 @@
 
 	<title>Workshare test</title>
 
-	<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+	<script src="lib/jquery-1.7.2.min.js"></script>
 
 	<!--[if lt IE 9]>
 		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>

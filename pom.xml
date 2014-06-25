@@ -29,6 +29,8 @@
 		<jslint.source.dir>${basedir}/src/main/webapp/js</jslint.source.dir>
 
 		<httpclient.version>4.2.5</httpclient.version>
+		
+		<jquery.version>1.7.2.min</jquery.version>
 	</properties>
 
 	<dependencies>
@@ -266,7 +268,7 @@
 			<plugin>
 				<groupId>com.github.searls</groupId>
 				<artifactId>jasmine-maven-plugin</artifactId>
-				<version>1.2.0.0</version>
+				<version>1.3.1.5</version>
 				<extensions>true</extensions>
 				<executions>
 					<execution>
@@ -277,12 +279,11 @@
 					</execution>
 				</executions>
 				<configuration>
-					<jsSrcDir>${project.basedir}/src/main/webapp/js</jsSrcDir>
+					<jsSrcDir>${project.basedir}/src/main/webapp</jsSrcDir>
 
-					<!-- NOTE: jQuery is needed for all other Javascript objects -->
-					<!-- <preloadSources> <source>${project.basedir}/src/main/webapp/lib/jquery-${jquery.version}.js</source> 
-						<source>${project.basedir}/src/main/webapp/lib/underscore-min.js</source> 
-						<source>${project.basedir}/src/main/webapp/lib/backbone-min.js</source> </preloadSources> -->
+					<preloadSources>
+						<source>lib/jquery-${jquery.version}.js</source>
+					</preloadSources>
 				</configuration>
 			</plugin>
 
