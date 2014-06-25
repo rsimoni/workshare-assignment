@@ -1,4 +1,4 @@
-package workshareassignment.rest;
+package workshareassignment.rest.fileweights;
 
 import static org.junit.Assert.assertEquals;
 
@@ -11,9 +11,11 @@ import net.minidev.json.JSONValue;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
-import workshareassignment.rest.FileWeightsResource.Report;
+import workshareassignment.rest.fileweights.Category;
+import workshareassignment.rest.fileweights.Report;
 
-public class FileWeightsResourceReportTest {
+
+public class ReportTest {
 
 	@Test public void valueOf_returns_3_documents() throws IOException {
 		final JSONArray json = aJSONArray(
@@ -21,18 +23,22 @@ public class FileWeightsResourceReportTest {
 				aFileAsJSON("hello world!", "pdf", "1858008"), 
 				aFileAsJSON("bye bye", "pdf", "1858008")
 		);
-		Report report = FileWeightsResource.Report.valueOf(json);
-		assertEquals(3, report.getDocumentsNumber());
+		Report report = Report.valueOf(json);
+		assertEquals(3, report.countOf(Category.documents));
 	}
 
-	@Test public void valueOf_returns_2_videos_with_expected_weights() throws IOException {
+	@Test public void valueOf_returns_2_videos_and_1_song_with_expected_weights() throws IOException {
 		final JSONArray json = aJSONArray(
 				aFileAsJSON("wombats", "avi", megabyte(10)),
-				aFileAsJSON("crazy-dog", "avi", megabyte(22))
+				aFileAsJSON("crazy-dog", "avi", megabyte(22)),
+				aFileAsJSON("backinblack", "mp3", megabyte(3.5))
 		);
-		Report report = FileWeightsResource.Report.valueOf(json);
-		assertEquals(2, report.getVideosNumber());
-		assertEquals(new BigDecimal("46976204.8"), report.getVideosGravity());
+		Report report = Report.valueOf(json);
+		System.out.println(report);
+		assertEquals(2, report.countOf(Category.videos));
+		assertEquals(new BigDecimal("46976204.8"), report.weightOf(Category.videos));
+		assertEquals(1, report.countOf(Category.songs));
+		assertEquals(new BigDecimal("4404019.2"), report.weightOf(Category.songs));
 	}
 
 	private String aFileAsJSON(String name, String extension, long size) {
@@ -57,8 +63,8 @@ public class FileWeightsResourceReportTest {
 				+ "]");
 	}
 
-	private long megabyte(int megabyte) {
-		return megabyte * 1024 * 1024;
+	private long megabyte(double megabyte) {
+		return (long) (megabyte * 1024 * 1024);
 	}
 	
 }
