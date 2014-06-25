@@ -186,8 +186,18 @@
 						<configuration>
 							<sources>
 								<source>src/main/webapp</source>
-								<source>src/main/javadoc</source>
-								<source>src/config</source>
+							</sources>
+						</configuration>
+					</execution>
+					<execution>
+						<id>add-test-source</id>
+						<phase>generate-test-sources</phase>
+						<goals>
+							<goal>add-test-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>src/test/javascript</source>
 							</sources>
 						</configuration>
 					</execution>
