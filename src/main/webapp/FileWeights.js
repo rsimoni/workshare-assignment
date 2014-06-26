@@ -16,3 +16,17 @@ FileWeights.newReportRequest = function (username, password, callback) {
 		success: callback
 	};
 };
+
+FileWeights.updateUI = function (container, template, data) {
+	var totalWeight = 0;
+	var totalIdealWeight = 0;
+	$.each(data.items, function () {
+	    totalWeight += this.weight;
+	    totalIdealWeight += this.idealWeight;
+	});
+
+	data.totalWeight = totalWeight.toFixed(2);
+	data.totalGravityDisplacement = (totalWeight - totalIdealWeight).toFixed(2);
+	
+	$(container).html(template(data));
+};
