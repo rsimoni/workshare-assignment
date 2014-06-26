@@ -5,7 +5,7 @@
 
 	<title>Workshare Assignment</title>
 
-	<script src="lib/jquery-1.7.2.min.js"></script>
+	<script src="lib/jquery-1.11.1.min.js"></script>
 	<script src="lib/jquery.blockUI.js"></script>
 	<script src="lib/handlebars-v1.3.0.js"></script>
 	<script src="FileWeights.js"></script>
