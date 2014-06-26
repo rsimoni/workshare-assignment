@@ -30,7 +30,7 @@
 
 		<httpclient.version>4.2.5</httpclient.version>
 		
-		<jquery.version>1.7.2.min</jquery.version>
+		<jquery.version>1.11.1.min</jquery.version>
 	</properties>
 
 	<dependencies>
