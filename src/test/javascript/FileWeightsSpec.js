@@ -1,7 +1,5 @@
 describe('FileWeights', function() {
 	
-	var fileweights = new FileWeights();
-
 	beforeEach(function() {
 		// NOTE: i want use app HTML for fixtures
 		jasmine.getFixtures().fixturesPath = 'src/main/webapp';
@@ -18,11 +16,11 @@ describe('FileWeights', function() {
 		var callback = function callback(data) { };
 		fileweights.report(username, password, callback);
 		
-		expect(jQuery.ajax).toHaveBeenCalledWith(FileWeights.newReportRequest(username, password, callback));
+		expect(jQuery.ajax).toHaveBeenCalledWith(fileweights.newReportRequest(username, password, callback));
 	});
 	
 	it('updateUI creates one item for each category', function() {
-		FileWeights.updateUI(
+		fileweights.updateUI(
 			'#report',
 			template,
 			{"items":[ {"category":"documents","count":2,"weight":2,"idealWeight":1},{"category":"others","count":1,"weight":4,"idealWeight":3} ]}
@@ -35,7 +33,7 @@ describe('FileWeights', function() {
 	});
 
 	it('updateUI shows total weight and total gravity displacement too', function() {
-		FileWeights.updateUI(
+		fileweights.updateUI(
 			'#report',
 			template,
 			{"items":[ {"category":"documents","count":2,"weight":2,"idealWeight":1},{"category":"others","count":1,"weight":4,"idealWeight":3} ]}

@@ -79,8 +79,6 @@
 	<script>
 		$(document).ajaxStop($.unblockUI);
 	
-		var fileweights = new FileWeights();
-		
 		var templateSource = $("#report-template").html();
 		var template = Handlebars.compile(templateSource);
 		
@@ -94,7 +92,7 @@
 			fileweights.report(username, password, function(data) {
 				console.log("... retrieved: " + JSON.stringify(data));
 				
-				FileWeights.updateUI('#report', template, data);
+				fileweights.updateUI('#report', template, data);
 			});
 		}
 	</script>
