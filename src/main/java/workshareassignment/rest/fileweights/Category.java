@@ -10,7 +10,7 @@ import workshareassignment.util.BigDecimals;
 public enum Category {
 
 	documents(new BigDecimal("1.1"), "odt", "docx", "pdf"), 
-	videos(new BigDecimal("1.4"), "avi"), 
+	videos(new BigDecimal("1.4"), "avi", "mp4"), 
 	songs(new BigDecimal("1.2"), "mp3"),
 	binaries("bin"),
 	text("txt"),
