@@ -6,6 +6,7 @@
 	<title>Workshare test</title>
 
 	<script src="lib/jquery-1.7.2.min.js"></script>
+	<script src="FileWeights.js"></script>
 
 	<!--[if lt IE 9]>
 		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -67,8 +68,16 @@
 	</div><!-- report -->
 
 	<script>
+		var fileweights = new FileWeights();
+	
 		function showFileWeigths() {
-			console.log("Show file weigths...");
+			var username = $("#username").val();
+			var password = $("#password").val();
+			
+			console.log("retrieving report for username " + username + "...");
+			fileweights.report(username, password, function(data) {
+				console.log("... retrieved: " + JSON.stringify(data));
+			});
 		}
 	</script>
 </body>
